@@ -3,49 +3,54 @@ def transform():
     row, col = map(int, input("Введите два числа: ").split())
     matrix = [[0] * col for _ in range(row)]
 
-    # числа для вставки
+    # счетчик для вставки
     count = 1
-    # вспомогательные переменные
-    a, b = 0, 0
-    # последний незаполненный ряд
-    rows = row -1
-    # последний незаполненный столбец
-    cols = col - 1
 
-    while a <= cols and b <= rows:
+    # левая незаполненная колонка
+    col_left = 0
+    
+    # верхняя незаполненная строка
+    row_up = 0
+
+    # правая незаполненная колонка
+    col_right = col - 1
+
+    # нижний незаполненный ряд
+    row_down = row - 1
+
+    while col_left <= col_right and row_up <= row_down:
 
         # заполняем верхний ряд
-        for i in range(a, cols + 1):
-            matrix[a][i] = count
+        for i in range(col_left, col_right + 1):
+            matrix[col_left][i] = count
             count += 1
-        b += 1
+        row_up += 1
 
-        # заполняем правую колонку
-        for i in range(b, rows + 1):
-            matrix[i][cols] = count
+        # заполняем правый столбец
+        for i in range(row_up, row_down + 1):
+            matrix[i][col_right] = count
             count += 1
-        cols -= 1
-
-        if b <= rows:
-            # заполняем нижний ряд
-            for i in range(cols, a - 1, -1):
-                matrix[rows][i] = count
-                count += 1
-            rows -= 1
+        col_right -= 1
         
-        if a <= cols:
-            # заполняем левый столбец
-            for i in range(rows, b - 1, -1):
-                matrix[i][a] = count
+        if row_up <= row_down:
+            # заполняем нижний ряд
+            for i in range(col_right, col_left - 1, -1):
+                matrix[row_down][i] = count
                 count += 1
-            a += 1
+            row_down -= 1
+
+        if col_left <= col_right:
+            # заполняем левую колонку
+            for i in range(row_down, row_up - 1, -1):
+                matrix[i][col_left] = count
+                count += 1
+            col_left += 1
 
     # выводим матрицу
     for i in range(row):
         for j in range(col):
             print(str(matrix[i][j]).rjust(3), end='')
         print()
-
 
 
 if __name__ == "__main__":
