@@ -1,29 +1,74 @@
-
 import random
 
+result = ""
 
+
+# функция добавления элементов
 def elements_in_pass(lenth, param):
-    elements = ''
+    """функция для создания строки из элементов которые должны быть в пароле по мнению пользователя
+    принимает длину пароля и строку элементов из которых выбирать случайные (числа Строчные буквы,
+    Заглавные буквы либо символы)"""
+
+    # пустая строка для формирования случайных элементов
+    elements = ""
     for _ in range(lenth):
+        # добовляем в строку случайные элемент из переданной строки элементов
         elements += random.choice(param)
+    # возвращаем нашу сформированную строку
     return elements
 
 
-def check(question, answer):
+# функция для проверки ответа
+def check_answer(question, answer):
+    """Функция для проверки ответа пользователя хочет ли он добавлять те или иные элементы в пароль
+    (цифры, заглавные буквы, строчные буквы, символы),
+    а также хочет ли он сгенерировать новый пароль,
+    принимает сам вопрос который задается пользователю и его ответ"""
+    # если ответ да то возвращаем истину также если ответ д то тоже возвращаем истину
     if answer.lower() in ["да", "д"]:
         return True
+    # если ответ нет либо не либо просто н то возвращаем ложь
     elif answer.lower() in ["нет", "не", "н"]:
         return False
+    # иначе если пользователь ввел чтото другое то рекурсивно просим ввести его правильный ответ
+    # до  тех пор пока он не введет чтото что описано в блоке выше
     else:
         print("Введены неккоректные данные")
         print(question)
         answer = input()
-        return check(question, answer)
+        return check_answer(question, answer)
+
+
+# функция для опроса пользователя
+def answers(lenth_pass):
+    """Функция для задавания вопросов пользователю по поводу того что включать в его пароль"""
+    global result
+    # словарь вопросов и если ответ да то передаем значение ключа
+    answer_dict = {
+        "Включать ли цифры в пароль?": "1234567890",
+        "Включать ли заглавные буквы в пароль?": "QWERTYUIOPASDFGHJKLZXCVBNM",
+        "Включать ли строчные буквы в пароль?": "qwertyuiopasdfghjklzxcvbnm",
+        "Включать ли символы в пароль?": ".,_-?!",
+    }
+    # проходимся по всем вопросам в словаре
+    for k, v in answer_dict.items():
+        # выводим вопрос на экран
+        print(k)
+        answer = input()
+        if check_answer(k, answer):
+            # записываем сгенерированную строку из функции elements_in_pass в переменную result
+            result += elements_in_pass(lenth_pass, v)
+        else:
+            # если ответ False то ничего не делаем
+            continue
+
 
 def main():
+    """Основная функция для работы программы"""
+    global result
     while True:
-        result = ''
-
+        # еще один цикл while нужен для того чтобы на месте проводить проверку что пользователь ввел число и
+        # не пускать его дальше до тех пор пока не введет число
         while True:
             # длина пароля
             lenth_pass = input("Введите длину пароля: ")
@@ -31,43 +76,19 @@ def main():
                 lenth_pass = int(lenth_pass)
                 break
             except:
-                print('Введите число')
+                print("Введите число")
+        # фузываем функцию для опроса
+        answers(lenth_pass)
 
-        # включать ли цыфры
-        question = 'Включать ли цифры в пароль?'
-        print(question)
-        nums_pass = input()
-        if check(question, nums_pass):
-            result += elements_in_pass(lenth_pass, "1234567890")
-
-        # включать ли заглавные
-        question = 'Включать ли заглавные буквы в пароль?'
-        print(question)
-        upper_letters = input()
-        if check(question, upper_letters):
-            result += elements_in_pass(lenth_pass, "QWERTYUIOPASDFGHJKLZXCVBNM")
-
-        # включать ли строчные
-        question = 'Включать ли строчные буквы в пароль?'
-        print(question)
-        lower_letters = input()
-        if check(question, lower_letters):
-            result += elements_in_pass(lenth_pass, "qwertyuiopasdfghjklzxcvbnm")
-
-        # включать ли символы
-        question = 'Включать ли символы в пароль?'
-        print(question)
-        sym_pass = input()
-        if check(question, sym_pass):
-            result += elements_in_pass(lenth_pass, ".,_-?!")
-
+        # генерируем пароль из разрешенных элементов которые записаны в переменной result
         password = random.sample(result, lenth_pass)
 
+        # выводим пароль на экран и спрашиваем желает ли пользователь сгенерировать новый пароль
         print(f"Пароль сгенерирован, ваш пароль: {''.join(password)}")
         question = "Хотите сгенерировать новый пароль? да/нет"
         print(question)
         answer = input()
-        if check(question, answer) == False:
+        if check_answer(question, answer) == False:
             break
 
 
