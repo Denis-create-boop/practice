@@ -1,4 +1,4 @@
-
+# функция для трансформации матрицы
 def transform():
     row, col = map(int, input("Введите два числа: ").split())
     matrix = [[0] * col for _ in range(row)]
