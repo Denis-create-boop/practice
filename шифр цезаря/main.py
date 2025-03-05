@@ -19,7 +19,6 @@ def code(message, step):
     
     if flag:
         operator = "-"
-
     # формируем строку из элементов
     answer = ""
     
@@ -27,10 +26,8 @@ def code(message, step):
     for i in range(len(message)):
         # записываем номер элемента из таблицы ASCII
         element = eval(f"{ord(message[i])}{operator}{step}")
-        
         if element < START:
             element = eval(f"{END} - ({step} - ({ord(message[i])} - {START - 1}))")
-        
         if element > END:
             element = eval(f'{element} - {END} + {START - 1}')
             
@@ -40,12 +37,12 @@ def code(message, step):
     # возвращаем получившуюся строку
     russion = 'ёйцукенгшщзхъфывапролджэячсмитьбю'
     english = 'qwertyuiopasdfghjklzxcvbnm'
+    
     for i in range(len(answer)):
         if answer[i] not in russion and answer[i] not in english:
             answer = answer[:i] + ' ' + answer[i+1:]
 
     return answer
-
 
 # функция проверки данных
 def check(lan_flag=None, step=None):
@@ -114,13 +111,12 @@ def check(lan_flag=None, step=None):
     else:
         if answer == 1:
             flag = True
-        
-            
+           
     
 # главная функция программы
 def main():
     """Функция для опроса пользователя спрашиваем язык программы и дальнейшие действия"""
-    global LANGUAGE, START, END, flag
+    global LANGUAGE
     
     # сообщение об установке языка программы
     choose_language = f"""choose language please / пожалуйста выберите язык:
@@ -133,34 +129,28 @@ def main():
     # если после проверки установился русский то продолжаем на русском
     if LANGUAGE == "Русский":
         # спрашиваем пользователя что он хочет сделать (зашифровать/разшифровать)
-        massage = f"""Здравствуйте. Пожалуйста выберите действие которое вы хотите сделать:
+        message = f"""Здравствуйте. Пожалуйста выберите действие которое вы хотите сделать:
         1 - зашифровать сообщение
         2 - разшифровать сообщение"""
-        print(massage)
-        # вызываем функцию проверки
-        check()
-        message = "Введите ваше сообщение"
-        print(message)
-        user_message = input()
-        step = check(step=True)
-        print(code(user_message, step))
-    
+        user_message = "Введите сообщение:"
+         
     # если после проверки установился английский то продолжаем на английском
-    if LANGUAGE == "English":
+    elif LANGUAGE == "English":
         # спрашиваем пользователя что он хочет сделать (зашифровать/разшифровать)
         message = f"""Wellcome. Please select the actions you want to do:
         1 - encrypt the message
         2 - descrypt the message"""
-        print(message)
-        # вызываем функцию проверки
-        check()
-        message = "Enter your message"
-        print(message)
-        user_message = input()
-        step = check(step=True)
-        print(code(user_message, step))
+        user_message = "Enter your message:"
+        
+    
+    print(message)
+    check()
+    print(user_message)
+    user_message = input()
+    step = check(step=True)
+    print(code(user_message, step))
     
 
-
+     
 if __name__ == "__main__":
     main()
