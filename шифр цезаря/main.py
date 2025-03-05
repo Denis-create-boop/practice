@@ -146,7 +146,7 @@ def main():
     print(message)
     check()
     print(user_message)
-    user_message = input()
+    user_message = input().lower()
     step = check(step=True)
     print(code(user_message, step))
     
