@@ -7,23 +7,23 @@ class Dariye:
         self.db = None
         self.cursor = None
         self.data_name = f"./{data_name}_table.db"
-        self.table_name = None
+        self.darie_name = None
         self.id = 1
     
     
-    def create_table(self, table_name):
-        self.table_name = table_name
+    def create_table(self, darie_name):
+        self.tdarie= darie_name
         with sqlite3.connect(self.data_name) as db:
             self.db = db
             self.cursor = db.cursor()
-            query = f""" CREATE TABLE IF NOT EXISTS {table_name}(id INTEGER, header TEXT, date TEXT, text TEXT) """
+            query = f""" CREATE TABLE IF NOT EXISTS {darie_name}(id INTEGER, header TEXT, date TEXT, text TEXT) """
             self.cursor.execute(query)
             self.db.commit()
     
     
     def get_last_id(self):
         query = """ SELECT MAX(id) FROM ? """
-        self.cursor.executemany(query, (self.table_name,))
+        self.cursor.executemany(query, (self.darie_name,))
         for row in self.cursor:
             self.id = row[0]
         self.id += 1
@@ -41,7 +41,7 @@ class Dariye:
     
     def show_all(self):
         query = """ SELECT header, date, text FROM ? """
-        self.cursor.executemany(query, (self.table_name,))
+        self.cursor.executemany(query, (self.darie_name,))
         list_writes = []
         for row in self.cursor:
             list_writes.append(row)

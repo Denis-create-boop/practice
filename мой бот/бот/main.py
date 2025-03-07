@@ -1,8 +1,10 @@
 import images
 from daries import dariyes_functions, dariyes_database
     
-def main():
+is_login = False
 
+def main():
+    global is_login
     print()
     print("                                                   ____________________")
     print(f"""                     --------------------------------------------------------------------------------
@@ -18,21 +20,31 @@ def main():
     |   3 - Могу нарисовать вам картинку                                                                         |
     |   4 - Могу показать вам ваш личный дневник                                                                 |
     |   5 - Могу изменить либо добавить запись в ваш дневник                                                     |
+    |   6 - Войти                                                                                                |
+    |   7 - Зарегестрироваться                                                                                   |
     |____________________________________________________________________________________________________________|"""                                                    
     
-    print(hello_message)
-    print(f"     {images.termcolor.colored("Введите команду:", "light_blue")}")
-    command = input(" ==>> ")
-    dariye = ["1", "создать", "новый", "личный", "создай"]
-    commands = {
-        dariyes_functions.create: dariye,
-    }
-    if command in dariye:
-        for k, v in commands.items():
-            if v == dariye:
-                k(dariyes_database.Dariye)
-                break
-                
+    while True:
+        if is_login:
+            print("hello")
+            break
+        
+        else:
+            print(hello_message)
+            command = dariyes_functions.check_command([1, 2, 3, 4, 5])
+            dariye = [1, "создать", "новый", "личный", "создай"]
+            commands = {
+                dariyes_functions.create: dariye,
+            }
+            print()
+            do_command = None
+            if command in dariye:
+                do_command = dariye
+
+            for key, value in commands.items():
+                if value == do_command:
+                    is_login = key(dariyes_database)
+                    break
 
 
 if __name__ == "__main__":
