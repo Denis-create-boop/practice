@@ -77,15 +77,15 @@ def check_login(register=False):
         return logins
         
     else:
-        user_password = None
+        
         login = input(termcolor.colored("Введите ваш логин или имейл ==>> ", "light_yellow"))
         users = users_db.Users()
         if "@" in login:
-            user_password = users.get_user(email=login)
+            data = users.get_user(email=login)
         else:
-            user_password = users.get_user(login=login)
+            data = users.get_user(login=login)
 
-        return user_password
+        return data
 
 
 def login_to_db():
@@ -104,6 +104,7 @@ def login_to_db():
             break
         else:
             print(termcolor.colored("               Введен неверный логин (почта) или пароль", "red"))
+    return login[1]
 
 
 def register_new_user():
@@ -147,5 +148,7 @@ def register_new_user():
             print()
             print(termcolor.colored("           Неверный повторный пароль попробуйте снова", "red"))
             print()
+    print(termcolor.colored(f"{name} Вы успешно зарегестрировались и вошли в аккаунт", "magenta"))
     table = users_db.Users()
     table.add_new_user(login, email, password, name)
+    return name

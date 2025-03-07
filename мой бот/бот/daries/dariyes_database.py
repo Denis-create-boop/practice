@@ -16,7 +16,7 @@ class Dariye:
         with sqlite3.connect(self.data_name) as db:
             self.db = db
             self.cursor = db.cursor()
-            query = f""" CREATE TABLE IF NOT EXISTS {darie_name}(id INTEGER, header TEXT, date TEXT, text TEXT) """
+            query = f""" CREATE TABLE IF NOT EXISTS {darie_name}(id INTEGER, header TEXT, date TEXT, text TEXT, image TEXT) """
             self.cursor.execute(query)
             self.db.commit()
     
@@ -29,11 +29,12 @@ class Dariye:
         self.id += 1
         
     
-    def add_write(self, new_header, new_date, new_write):
+    def add_write(self, new_header, new_date, new_write, image=None):
+        self.create_table()
         self.get_last_id()
-        query = """ INSERT INTO ? (id, header, date, text) VALUES(?, ?, ?, ?) """
+        query = """ INSERT INTO ? (id, header, date, text, image) VALUES(?, ?, ?, ?, ?) """
         insert_payments = [
-            (self.id, new_header, new_date, new_write,)
+            (self.id, new_header, new_date, new_write, image)
         ]
         self.cursor.executemany(query, insert_payments)
         self.db.commit()
