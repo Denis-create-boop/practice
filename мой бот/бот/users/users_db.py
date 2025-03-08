@@ -14,9 +14,10 @@ class Users:
         with sqlite3.connect("./users.db") as db:
             self.db = db
             self.cursor = db.cursor()
-            query = f""" CREATE TABLE IF NOT EXISTS users(login TEXT, email TEXT, password TEXT, name TEXT) """
+            query = f""" CREATE TABLE IF NOT EXISTS users(login TEXT, email TEXT, password TEXT, name TEXT, dariye_name TEXT, table_name TEXT) """
             self.cursor.execute(query)
             self.db.commit()
+            
     
     
     def get_all_users(self):
@@ -30,19 +31,44 @@ class Users:
             users.append({"email": row[1]})
             users.append({"password": row[2]})
             users.append({"name": row[3]})
+            users.append({"dariye": row[4]})
+            users.append({"table_name": row[5]})
         
         return users
     
     
-    def add_new_user(self, new_login, new_email, new_password, new_name):
+    def add_new_user(self, new_login, new_email, new_password, new_name, dariye=None):
         """функция для добавления нового пользователя в бд"""
         self.create_table()
         ls = [
-            (new_login, new_email, new_password, new_name,),
+            (new_login, new_email, new_password, new_name, dariye,),
         ]
-        query = """ INSERT INTO users (login, email, password, name) VALUES(?, ?, ?, ?) """
+        query = """ INSERT INTO users (login, email, password, name, dariye_name) VALUES(?, ?, ?, ?, ?) """
         self.cursor.executemany(query, ls)
         self.db.commit()
+
+
+    def create_dariye(self, user_name, dariye_name):
+        add_user_name = str(user_name) + "_table.db"
+        """функция для создания дневника"""
+        self.create_table()
+        query = """ UPDATE users SET table_name = ? WHERE name = ? """
+        self.cursor.execute(query, (add_user_name, user_name))
+        self.db.commit()
+        query = """ UPDATE users SET dariye_name = ? WHERE name = ? """
+        self.cursor.execute(query, (dariye_name, user_name))
+        self.db.commit()
+        
+
+    def get_dariye(self, user_name):
+        """Функция для получения названия дневника пользователя"""
+        self.create_table()
+        query = """ SELECT dariye_name FROM users WHERE name = ? """
+        self.cursor.execute(query, (user_name,))
+        name = ""
+        for row in self.cursor:
+            name = row[0]
+        return name
 
 
     def get_user(self, login=None, email=None):
@@ -76,6 +102,15 @@ class Users:
             
         return users
     
+    def get_table_name(self, name):
+        """Получаем название бд пользователя"""
+        self.create_table()
+        query = """ SELECT table_name FROM users WHERE name=? """
+        self.cursor.execute(query, (name,))
+        table_name = ""
+        for row in self.cursor:
+            table_name = row[0]
+        return table_name
     
     def change_mail(self, email):
         pass
@@ -87,3 +122,4 @@ class Users:
     
     def change_password(self, password):
         pass
+

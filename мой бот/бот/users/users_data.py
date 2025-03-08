@@ -98,7 +98,7 @@ def login_to_db():
         login = check_login()
         password = check_password(login=True)
         if login[0] == password:
-            print(termcolor.colored(f"      Добро пожаловать {login[1]}", "light_cyan"))
+            print(termcolor.colored(f"                                                  Добро пожаловать {login[1]}", "light_cyan"))
             print()
             iS_LOGIN = True
             break

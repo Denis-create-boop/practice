@@ -8,49 +8,59 @@ class Dariye:
         self.cursor = None
         self.data_name = f"./{data_name}_table.db"
         self.darie_name = None
-        self.id = 1
     
     
-    def create_table(self, darie_name):
-        self.tdarie= darie_name
+    def set_param(self):
         with sqlite3.connect(self.data_name) as db:
             self.db = db
             self.cursor = db.cursor()
-            query = f""" CREATE TABLE IF NOT EXISTS {darie_name}(id INTEGER, header TEXT, date TEXT, text TEXT, image TEXT) """
-            self.cursor.execute(query)
-            self.db.commit()
     
-    
-    def get_last_id(self):
-        query = """ SELECT MAX(id) FROM ? """
-        self.cursor.executemany(query, (self.darie_name,))
-        for row in self.cursor:
-            self.id = row[0]
-        self.id += 1
+    def create_table(self, darie_name):
+        self.set_param()
+        new_darie_name = ""
+        for i in darie_name:
+            if i == " ":
+                new_darie_name += "_"
+            else:
+                new_darie_name += i
+                
+        query = f""" CREATE TABLE IF NOT EXISTS {new_darie_name}(header TEXT, date TEXT, text TEXT, image TEXT) """
+        self.cursor.execute(query)
+        self.db.commit()
         
     
-    def add_write(self, new_header, new_date, new_write, image=None):
-        self.create_table()
-        self.get_last_id()
-        query = """ INSERT INTO ? (id, header, date, text, image) VALUES(?, ?, ?, ?, ?) """
+    def add_write(self, name, new_header, new_date, new_write, image=None):
+        self.set_param()
+        query = f""" INSERT INTO {name} (header, date, text, image) VALUES(?, ?, ?, ?) """
         insert_payments = [
-            (self.id, new_header, new_date, new_write, image)
+            (new_header, new_date, new_write, image)
         ]
         self.cursor.executemany(query, insert_payments)
         self.db.commit()
     
     
-    def show_all(self):
-        query = """ SELECT header, date, text FROM ? """
-        self.cursor.executemany(query, (self.darie_name,))
-        list_writes = []
-        for row in self.cursor:
-            list_writes.append(row)
+    def get_all(self, dariye_name):
+        """Функция для получения всех записей дневника"""
+        self.set_param()
+        query = f""" SELECT * FROM {dariye_name} """
+        self.cursor.execute(query)
+        all_writes = []
         
-        return list_writes
+        for row in self.cursor:
+            all_writes.append(row)
+            
+        if all_writes:
+            return all_writes
+        
+        else:
+            return "В дневнике пока нет записей"
     
     
     def find_write(self, data=None, name=None):
         pass
     
     
+    
+    def delete_dariye(self, dariye_name):
+        pass
+

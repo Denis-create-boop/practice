@@ -47,17 +47,15 @@ def main():
             print(message_commands, flush=True)
             command = check_command([1, 2, 3, 4, 5, 6, 7])
             command_do_it = {
-                1: dariyes_functions.show_dariye(name),
-                2: dariyes_functions.add_new_write(name),
-                3: dariyes_functions.add_image(name),
-                4: dariyes_functions.create(name),
-                5: dariyes_functions.del_dariye(name),
+                1: dariyes_functions.show_dariye,
+                2: dariyes_functions.add_new_write,
+                3: dariyes_functions.add_image,
+                4: dariyes_functions.create,
+                5: dariyes_functions.del_dariye,
                 6: "",
                 7: goodbye()
             }
-            command_do_it[command]
-            
-            break
+            command_do_it[command](name)
         
         else:
             print(hello_message)
