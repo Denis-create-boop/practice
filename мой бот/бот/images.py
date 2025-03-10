@@ -70,3 +70,9 @@ def heart():
     
     for st in heart:
         print(st)
+
+
+     
+my_images = {
+    1: heart,
+}

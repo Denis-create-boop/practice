@@ -14,6 +14,7 @@ class Dariye:
         with sqlite3.connect(self.data_name) as db:
             self.db = db
             self.cursor = db.cursor()
+            
     
     def create_table(self, darie_name):
         self.set_param()
@@ -55,11 +56,33 @@ class Dariye:
         else:
             return "В дневнике пока нет записей"
     
-    
-    def find_write(self, data=None, name=None):
-        pass
-    
-    
+    def add_image(self, new_image, header=None, date=None):
+        """Функция для добавления изображения"""
+        self.set_param()
+        if header:
+            query = f""" UPDATE {self.data_name} SET image=? WHERE header=? """
+            self.cursor.execute(query, (new_image, header))
+        elif date:
+            query = f""" UPDATE {self.data_name} SET image=? WHERE date=? """
+            self.cursor.execute(query, (new_image, date))
+        self.db.commit()
+        
+    def get_date_or_header(self, name, date=None, header=None):
+        """Функция для получения либо даты записи либо ее заголовка"""
+        self.set_param()
+        result = []
+        if date:
+            query = f""" SELECT date FROM {name} """
+            self.cursor.execute(query)
+            
+        elif header:
+            query = f""" SELECT header FROM {self.data_name} """
+            self.cursor.execute(query)
+            
+        for row in self.cursor:
+            result.append(row[0])
+        
+        return result
     
     def delete_dariye(self, dariye_name):
         pass
