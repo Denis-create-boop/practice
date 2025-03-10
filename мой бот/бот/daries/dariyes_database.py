@@ -6,7 +6,7 @@ class Dariye:
     def __init__(self, data_name):
         self.db = None
         self.cursor = None
-        self.data_name = f"./{data_name}_table.db"
+        self.data_name = f"./{data_name}_database.db"
         self.darie_name = None
     
     
@@ -67,6 +67,7 @@ class Dariye:
             self.cursor.execute(query, (new_image, date))
         self.db.commit()
         
+        
     def get_date_or_header(self, name, date=None, header=None):
         """Функция для получения либо даты записи либо ее заголовка"""
         self.set_param()
@@ -85,5 +86,10 @@ class Dariye:
         return result
     
     def delete_dariye(self, dariye_name):
-        pass
+        """Функция для удаления дневника"""
+        self.set_param()
+        query = f""" DROP TABLE IF EXISTS {dariye_name} """
+        self.cursor.execute(query)
+        self.db.commit()
+
 

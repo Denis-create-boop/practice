@@ -1,4 +1,7 @@
 import termcolor
+import os
+
+os.system('color')
 
 
 def heart():

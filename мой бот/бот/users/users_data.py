@@ -2,6 +2,9 @@ import keyboard
 import termcolor
 import re as r
 from users import users_db
+import os
+
+os.system('color')
 
 IS_LOGIN =False
 

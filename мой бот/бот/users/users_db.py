@@ -112,14 +112,11 @@ class Users:
             table_name = row[0]
         return table_name
     
-    def change_mail(self, email):
-        pass
     
-    
-    def change_login(self, login):
-        pass
-    
-    
-    def change_password(self, password):
-        pass
-
+    def delete_dariye(self):
+        """Функция для удаления дневника"""
+        self.create_table()
+        query = """ UPDATE users SET dariye_name=None """
+        self.cursor.execute(query)
+        self.db.commit()
+        

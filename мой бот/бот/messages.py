@@ -1,5 +1,7 @@
 import termcolor
+import os
 
+os.system('color')
 
 hello_message = f"""                                               ____________________
                  --------------------------------------------------------------------------------
@@ -31,6 +33,7 @@ message_login = f"""{termcolor.colored("""
             |   |         |   |     |   |_________      |   |_________      |   |_________      |   |______|   |
             |___|         |___|     |_____________|     |_____________|     |_____________|     |______________|""", "light_cyan")}"""
 
+
 message_commands = f"""
                     {termcolor.colored("Добро пожаловать, пожалуйста выбери дальнейшее действие которое ты хочешь совершить:", "cyan")}
                                                 1 - Посмотреть свой дневник
@@ -41,6 +44,46 @@ message_commands = f"""
                                                 6 - Пообщатся с ботом
                                                 7 - Выйти
                     """
+        
+        
+sky_under_the_bot = f"""
+    {termcolor.colored("###################################################################################################", "blue")}
+    {termcolor.colored("######################################################*", "blue")}{termcolor.colored("&&&&&&", "white")}{termcolor.colored("*#####################################", "blue")}
+    {termcolor.colored("#########*", "blue")}{termcolor.colored("&&&&&", "white")}{termcolor.colored("*###################################*", "blue")}{termcolor.colored("&&&&&&&&&&", "white")}{termcolor.colored("*####################################", "blue")}
+    {termcolor.colored("#########*", "blue")}{termcolor.colored("&&&&&&&", "white")}{termcolor.colored("*################################*", "blue")}{termcolor.colored("&&&&&&&&&&&&&&&", "white")}{termcolor.colored("*################################", "blue")}
+    {termcolor.colored("###########*", "blue")}{termcolor.colored("&&&&", "white")}{termcolor.colored("*##############################*", "blue")}{termcolor.colored("&&&&&&&&&&&&&&&", "white")}{termcolor.colored("*###################################", "blue")}
+    {termcolor.colored("################################################*", "blue")}{termcolor.colored("&&&&&&&&&&&&&", "white")}{termcolor.colored("*####################################", "blue")}
+    {termcolor.colored("####################################################*", "blue")}{termcolor.colored("&&&&&&", "white")}{termcolor.colored("*#######################*", "blue")}{termcolor.colored("&&&&&&", "white")}{termcolor.colored("*########", "blue")}
+    {termcolor.colored("&", "white")}{termcolor.colored("*###############################################################################*", "blue")}{termcolor.colored("&&&&&&", "white")}{termcolor.colored("*##########", "blue")}
+    {termcolor.colored("&&", "white")}{termcolor.colored("*##############################################################################*", "blue")}{termcolor.colored("&&&&&", "white")}{termcolor.colored("*###########", "blue")}
+                     """
+            
+   
                     
-                    
-                    
+message_bot_hello = f"""
+                                    {termcolor.colored("||", "white")}                          {termcolor.colored("||", "white")}
+                                    {termcolor.colored("||", "white")}                          {termcolor.colored("||", "white")}
+                                    {termcolor.colored("||", "white")}                          {termcolor.colored("||", "white")}
+            {termcolor.colored("|----------------------------------------------------------------------------|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}         {termcolor.colored("$$$$$$$$$$$$$", "light_magenta")}                                {termcolor.colored("$$$$$$$$$$$$$", "light_magenta")}         {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}           {termcolor.colored("=== * ===", "blue")}                                    {termcolor.colored("=== * ===", "blue")}           {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                    {termcolor.colored("||", "cyan")}                                      {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                    {termcolor.colored("||", "cyan")}                                      {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                    {termcolor.colored("+", "cyan")}                                       {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                   {termcolor.colored("_._._._._._._._._._._._._._._._._._._")}                    {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|", "light_red")}                                                                            {termcolor.colored("|", "light_red")}
+            {termcolor.colored("|----------------------------------------------------------------------------|", "light_red")}
+                                   {termcolor.colored("------ WELCOME TO THE BOT ------", "green")}
+"""
+
+

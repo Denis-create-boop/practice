@@ -59,9 +59,9 @@ def check_writes(name):
         header = answer
         ls_header = table.get_date_or_header(table_name, header=header)
         if header in ls_header:
-            return True
+            return [True, header]
         else:
-            return False
+            return [False, data]
     
     
 def add_new_write(name):
@@ -91,16 +91,21 @@ def add_new_write(name):
     else:
         print(termcolor.colored("Что бы добавить запись в дневник сначала создайте дневник", "light_red"))
 
+
 def add_image(name):
     table = Users()
     dariye = table.get_dariye(name)
     if dariye:
         new_image = check_image_number()
-        flag = check_writes(name)
-        if flag:
-            print("ok")
+        answer = check_writes(name)
+        dariye_table = dariyes_database.Dariye(name)
+        if answer[0]:
+            dariye_table.add_image(new_image, header=answer[1])
+                
         else:
-            print("no")
+            dariye_table.add_image(new_image, date=answer[1])
+        
+        print(termcolor.colored("Изображение добавлено", "light_green"))
     
 
 
@@ -142,5 +147,7 @@ def del_dariye(name):
         del_dariye = get_del_dariye.get_dariye(user_name=name)
         table = darie(name)
         table.delete_dariye(dariye_name=del_dariye)
+        get_del_dariye.delete_dariye()
+        print(termcolor.colored("Дневник удален", "light_green"))
     else:
         print(termcolor.colored("У вас пока нет дневника", "light_red"))

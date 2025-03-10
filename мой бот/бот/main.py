@@ -1,8 +1,12 @@
 
-from daries import dariyes_functions, dariyes_database
+from daries import dariyes_functions
+from main_bot import bot
 from messages import *
 from users import users_data
 import time
+import os
+
+os.system('color')
     
 is_login = False
 name = None
@@ -52,8 +56,8 @@ def main():
                 3: dariyes_functions.add_image,
                 4: dariyes_functions.create,
                 5: dariyes_functions.del_dariye,
-                6: "",
-                7: goodbye()
+                6: bot.main_bot,
+                7: goodbye
             }
             command_do_it[command](name)
         
@@ -67,12 +71,15 @@ def main():
                 name = users_data.register_new_user()
                 is_login = True
             else:
-                pass
+                time.sleep(1)
+                bot.main_bot()
+                break
             
 
 
 def goodbye():
     pass
+
 
 if __name__ == "__main__":
     main()
