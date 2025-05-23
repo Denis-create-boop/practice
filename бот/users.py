@@ -27,7 +27,9 @@ def registration():
 
 
 def look_all_users():
-    pass
+    users = Users.get_all_users()
+    for user in users:
+        print("==> ", user)
 
 
 def profile(user):
