@@ -1,7 +1,9 @@
 from random import randrange
 
 from users import *
-
+from game import *
+from jokes import *
+from calculate import *
 
 
 def hello():
@@ -33,17 +35,6 @@ def hello():
 
 
 
-def calc():
-    pass
-
-
-def tell_joke():
-    pass
-
-
-def game():
-    pass
-
 def main():
     """Функция для работы с ботов в ограниченных условиях не входя в аккаунт"""
     hello_message = f"""
@@ -67,20 +58,6 @@ def main():
     answers_dict[answer]()
     
     
-def check_command(commands):
-    """Функция для проверки команды"""
-    answer = input("Введите команду ==>> ")
-    try:
-        answer = int(answer)
-        if answer in commands:
-            return answer
-        else:
-            print("Введена некорректная команда")
-            check_command(commands)
-    except:
-        print("Введены некорректные данные, должно быть число")
-        check_command(commands)
-    return
 
 if __name__ == '__main__':
     hello()
