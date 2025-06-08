@@ -1,7 +1,10 @@
-from users_db.users_db import Users, Messages
+from users_db.users_db import Users, Incoming_Messages
+import time
 from jokes import *
 from game import *
 from calculate import *
+
+
 
 
 def login():
@@ -47,29 +50,57 @@ def look_all_users():
 
 
 def profile(user):
-    print("                     Добро пожаловать", user[0])
-    message = Messages(user[0])
-    id = message.get_last_id()
-    if id['id'] < id['last_id']:
-        print('Вам прислали новое сообщение')
-        input()
+    print("                                 Добро пожаловать", user[0])
+    print()
+    message = Incoming_Messages(user[0])
+    messages = message.get_not_read_messages()
+    if len(messages) > 0:
         
-    print(f"""                  Выберите действие:
-                        1 - Сыграть в викторину
-                        2 - Расскажи анегдот
-                        3 - Мои сообщения
-                        4 - Написать другому пользователю
-                        5 - Калькулятор""")
-    answer = check_command()
+        print(f'''      У вас есть новые сообщения
+              1 - Прочитать
+              2 - Продолжить''')
+        answer = check_command([1, 2])
+        if answer == 1:
+            print(messages)
+            for k, v in messages.items():
+            
+                print(f"""                                    Сообщение:
+    {v[1]}
+    
+                                    От:
+    {v[2]}
+    """)  
+            
+                message.set_flag(v[0])
+                print()
+                print("""    1 - Ответить
+    ENTER ==>> Следующее""")
+                
+                answer = check_command([1], flag=True)
+                if answer == 1:
+                    send_message(user, user_login=v[2])
+            print("         Больше сообщений нет")
+            time.sleep(0.1)
+            print()
+
+    print(f"""      Выберите действие:
+            1 - Сыграть в викторину
+            2 - Расскажи анегдот
+            3 - Мои сообщения
+            4 - Написать другому пользователю
+            5 - Калькулятор
+            6 - Выход""")
+    answer = check_command([1, 2, 3, 4, 5, 6])
     command_dict = {
         1: game,
         2: tell_joke,
         3: my_messages,
         4: send_message,
         5: calc,
+        6: exit,
     }
     
-    command_dict[answer]()
+    command_dict[answer](user[0])
 
 
 def check_login(flag=False):
@@ -150,25 +181,54 @@ def check_email():
         else:
             print("Введен неккоректный имейл")
             
-def check_command(commands):
+def check_command(commands, flag=False):
     """Функция для проверки команды"""
     answer = input("Введите команду ==>> ")
-    try:
-        answer = int(answer)
-        if answer in commands:
-            return answer
-        else:
-            print("Введена некорректная команда")
+    if flag:
+        if answer == '':
+            return
+    else:
+        try:
+            answer = int(answer)
+            if answer in commands:
+                return answer
+            else:
+                print("Введена некорректная команда")
+                check_command(commands)
+        except:
+            print("Введены некорректные данные, должно быть число")
             check_command(commands)
-    except:
-        print("Введены некорректные данные, должно быть число")
-        check_command(commands)
-    return
+        return
 
-def my_messages():
+
+
+def my_messages(my_login=None):
     pass
 
 
-def send_message():
-    print("         Введите логин пользователя которому хотите написать")
-    login = input('==>> ')
+def send_message(user, user_login=None):
+    if user_login is None:
+        print("                 Введите логин пользователя которому хотите написать")
+        login_other_user = input('==>> ')
+        users = Users()
+        all_users = users.get_all_users()
+        if login_other_user in all_users:
+            print("                     Введите ваше сообщение")
+            message = input("==>> ")
+            users_message = Incoming_Messages(login_other_user)
+            users_message.insert_message(message, user_login=user)
+            
+        else:
+            print("Введен неверный логин")
+            send_message(user)
+    else:
+        print("                     Введите ваше сообщение")
+        message = input("==>> ")
+        users_message = Incoming_Messages(user_login)
+        users_message.insert_message(message, user_login=user)
+        
+    
+    profile(user)
+    
+def exit(user):
+    print("Всего доброго", user)

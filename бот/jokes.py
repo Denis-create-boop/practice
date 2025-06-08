@@ -1,4 +1,4 @@
 
 
-def tell_joke():
+def tell_joke(login=None):
     pass

@@ -57,10 +57,10 @@ class Users:
     def get_user(self, login=None, email=None):
         """Функция для получения конкретного пользователя"""
         self.create_table()
-        query = f"""SELECT * FROM users WHERE login={login} OR email={email}"""
+        query = """SELECT * FROM users WHERE login=? OR email=?"""
         
         info_about_user = []
-        self.cursor.execute(query)
+        self.cursor.execute(query, (login, email))
         
         for row in self.cursor:
             info_about_user.append(row[1])
@@ -70,73 +70,66 @@ class Users:
             
         
         
-class Messages:
+class Incoming_Messages:
     
     def __init__(self, login):
         
-        self.login = login
+        self.login = str(login) + '_incoming_messages'
         self.cursor = None
         self.db = None
-        self.id = 1
+        self.id = 0
         
         
     def create_table(self):
-        """Функция для создания базы данных и таблицы в базе данных для хранения писем"""
+        """Функция для создания базы данных и таблицы в базе данных для хранения  входящих писем"""
         with sqlite3.connect('./users_messages_db.db') as db:
             self.db = db
             self.cursor = db.cursor()
-            query = f""" CREATE TABLE IF NOT EXISTS {self.login}_messages (id INTEGER, incoming_messages TEXT, sended_messages TEXT, last_id INTEGER)"""
+            query = f""" CREATE TABLE IF NOT EXISTS {self.login} (id INTEGER, message TEXT, from_who TEXT, flag TEXT)"""
             self.cursor.execute(query)
             self.db.commit() 
             
             
-    def show_messages(self, messages):
-        """Функция для отображения сообщений пользователя"""
+    def insert_message(self, message, user_login=None):
+        """Функция для записи новых сообщений"""
         self.create_table()
-        messages = []
-        query = f"""SELECT id, {messages} FROM {self.login}_messages"""
-        self.cursor.execute(query)
-        for row in self.cursor:
-            messages.append(row)
-            
-        return messages
-            
-    def insert_message(self, message, flag=False):
-        self.create_table()
-        query = f"""INSERT INTO {self.login}_messages (id, incoming_messages, sended_messages, last_id) VALUES (?, ?, ?, ?)"""
-        if flag:
-            insert_payments = [
-                (self.id + 1, None, message, self.id + 1),
-            ]
-        else:
-            insert_payments = [
-                (self.id + 1, message, None, self.id + 2),
-            ]
-            
+        self.get_id()
+        query = f"""INSERT INTO {self.login} (id, message, from_who, flag) VALUES (?, ?, ?, ?)"""
+        
+        insert_payments = [
+            (self.id + 1, message, user_login, 'not_read'),
+        ]
+           
         self.cursor.executemany(query, insert_payments)
         self.db.commit()
 
 
     def get_id(self):
         self.create_table()
-        query = f"""SELECT MAX(id) FROM {self.login}_messages"""
+        query = f"""SELECT MAX(id) FROM {self.login}"""
         self.cursor.execute(query)
         for row in self.cursor:
             if not row[0] is None:
                 self.id = int(row[0])
                 
                 
-    def get_last_id(self):
+    def get_not_read_messages(self):
+        """Функция для просмотра непрочитанных сообщений"""
         self.create_table()
-        self.get_id()
-        query = f"""SELECT last_id FROM {self.login}_messages"""
+        query = """SELECT * FROM {} WHERE flag='not_read'""".format(self.login)
         self.cursor.execute(query)
-        id_dict = {
-            'id': self.id,
-            'last_id': self.id
-        }
+        messages = dict()
+        count = 1
         for row in self.cursor:
-            id_dict['last_id'] = row[0]
+            messages[count] = row
+            count += 1
+        return messages
+    
+    
+    def set_flag(self, id):
+        """Функция для отметки что сообщение прочитано"""
+        query = """UPDATE {} SET flag='read' WHERE id={}""".format(self.login, id)
+        self.cursor.execute(query)
+        self.db.commit()
         
-        return id_dict
-        
+

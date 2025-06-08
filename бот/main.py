@@ -22,12 +22,14 @@ def hello():
     print(f"""          Выберите комманду:
                             1 - войти
                             2 - зарегестрироваться
-                            3 - продолжить как гость""")
+                            3 - продолжить как гость
+                            4 - закрыть программу""")
     
     answers_dict = {
         1: login,
         2: registration,
-        3: main
+        3: main,
+        4: goodbye
     }
     answer = check_command(answers_dict.keys())
     answers_dict[answer]()
@@ -57,6 +59,9 @@ def main():
 
     answers_dict[answer]()
     
+    
+def goodbye():
+    print("Всего доброго")
     
 
 if __name__ == '__main__':

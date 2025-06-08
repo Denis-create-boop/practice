@@ -1,4 +1,4 @@
 
 
-def game():
+def game(login=None):
     pass
