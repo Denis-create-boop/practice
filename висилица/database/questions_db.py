@@ -12,7 +12,7 @@ class Categories:
     
     def create_table(self):
         """функция для создания таблицы в базе данных"""
-        with sqlite3.connect('category.db') as db:
+        with sqlite3.connect('./висилица/database/databases/category.db') as db:
             self.db = db
             self.cursor = db.cursor()
             query = """ CREATE TABLE IF NOT EXISTS categories (category TEXT)"""
@@ -69,7 +69,7 @@ class Words:
     
     def create_table(self):
         """функция для создания таблицы"""
-        with sqlite3.connect('./words.db') as db:
+        with sqlite3.connect('./висилица/database/databases/words.db') as db:
             self.db = db
             self.cursor = db.cursor()
             query = """ CREATE TABLE IF NOT EXISTS words (category TEXT, word TEXT)"""
@@ -80,7 +80,7 @@ class Words:
     def add_word(self, category, word):
         """функция для добавления слов в таблицу"""
         self.create_table()
-        words = self.show_words()
+        words = self.show_words(category=category)
         
         if word not in words and category in self.categories:
             query = """INSERT INTO words (category, word) VALUES (?, ?)"""
@@ -115,4 +115,5 @@ class Words:
             
         return all_words
     
-    
+
+w = Words()
